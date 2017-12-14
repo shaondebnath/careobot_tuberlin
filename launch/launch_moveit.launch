@@ -1,0 +1,57 @@
+<?xml version="1.0"?>
+<launch>
+
+  <arg name="robot" default="$(optenv ROBOT !!NO_ROBOT_SET!!)"/>
+  <arg name="with_db" default="false"/>
+  <arg name="debug" default="false"/>
+	
+  <node pkg="tf" type="static_transform_publisher" name="virtual_joint_broadcaster_0" args="0 0 0 0 0 0 odom_combined base_footprint 100"/>
+
+<!-- <node name="joint_state_publisher" pkg="joint_state_publisher" type="joint_state_publisher">
+    <param name="/use_gui" value="false"/>
+    <rosparam param="/source_list">[/move_group/fake_controller_joint_states]</rosparam>
+  </node>
+
+  <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher" respawn="false" output="screen"/>
+-->
+<!-- we do not need to call as we already call it from cob_controller_configuration_gazebo/launch/robots/default_controllers_cob3-2.launch
+
+<arg name="robot" default="$(optenv ROBOT !!NO_ROBOT_SET!!)"/>
+	<arg name="pkg_hardware_config" default="$(find cob_hardware_config)"/>
+
+	<node pkg="robot_state_publisher" type="robot_state_publisher" name="robot_state_publisher" output="screen" />
+
+	<node pkg="joint_state_publisher" type="joint_state_publisher" name="joint_state_publisher" output="screen" >
+		<remap from="robot_description" to="/robot_description"/>
+		<remap from="joint_states" to="/joint_states"/>
+		<rosparam command="load" file="$(arg pkg_hardware_config)/$(arg robot)/config/joint_state_publisher.yaml"/>
+	</node>
+
+
+
+-->
+
+  <include file="$(find cob_moveit_config)/launch/move_group.launch">
+    <arg name="robot" value="$(arg robot)"/>
+    <arg name="load_robot_description" value="true"/>
+    <arg name="allow_trajectory_execution" value="true"/>
+    <arg name="fake_execution" value="false"/>
+    <arg name="use_sensors" value="true"/>
+    <arg name="info" value="true"/>
+    <arg name="debug" value="$(arg debug)"/>
+  </include>
+
+
+ <!-- <include file="$(find cob_moveit_config)/launch/rviz.launch">
+    <arg name="robot" value="$(arg robot)"/>
+    <arg name="config" value="true"/>
+    <arg name="debug" value="$(arg debug)"/>
+  </include> -->
+
+  <include file="$(find cob_moveit_config)/launch/warehouse.launch" if="$(arg with_db)">
+    <arg name="moveit_warehouse_database_path" value="$(find cob_moveit_config)/$(arg robot)/default_warehouse_mongo_db"/>
+  </include>
+
+	
+
+</launch>

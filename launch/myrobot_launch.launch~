@@ -1,0 +1,34 @@
+<?xml version="1.0"?>
+<launch>
+
+   	<arg name="robot"            default="cob3-2"/>
+	<arg name="robot_env"        default="ipa-kitchen"/>
+	<arg name="navigation"       default="2dnav_ros_dwa"/>
+	<arg name="map"              default="$(find cob_default_env_config)/$(arg robot_env)/map.yaml"/>
+	<arg name="command_topic" default="base/twist_mux/command_teleop_keyboard"/>
+
+<!-- start robot in simulator-->
+	<include file="$(find cob_bringup_sim)/launch/robot.launch">
+		<arg name="robot"     value="$( arg robot )" />
+		<arg name="robot_env" value="$( arg robot_env )" />
+	</include>
+<!-- END robot load -->
+
+<!-- Start Loading Object-->
+	<!-- send urdf to param server  -->
+	<param name="milk_description" textfile="$(find cob_gazebo_objects)/objects/milk.urdf" /> 
+
+	<!-- spawn the model in gazebo-->
+	<node name="spawn_Milkbox" pkg="gazebo_ros" type="spawn_model" args="-x -3.201 -y 0.0 -z 0.9 -urdf -param milk_description -model Milkbox" respawn="false" output="screen" /> 
+<!-- END Loading Object-->
+
+
+	<include file="$(find cob_navigation_global)/launch/$(arg navigation).launch">
+		<arg name="robot"     value="$( arg robot )" />
+		<arg name="robot_env" value="$( arg robot_env )" />
+		<arg name="map"       value="$( arg map )" />
+	</include>
+
+
+
+</launch>

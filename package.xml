@@ -1,0 +1,24 @@
+<package format="2">
+  <name>careobot_tuberlin</name>
+  <version>0.1.0</version>
+  <description>The careobot_tuberlin package</description>
+
+  <maintainer email="shaondebnath@gmail.com">Shaon Debnath</maintainer>
+  <author email="shaondebnath@gmail.com">Shaon Debnath</author>
+
+  <license>BSD</license>
+
+  <buildtool_depend>catkin</buildtool_depend>
+
+  <exec_depend>rospy</exec_depend>
+  <exec_depend>moveit_msgs</exec_depend>
+  <exec_depend>cob_script_server</exec_depend>
+  <exec_depend>cob_bringup_sim</exec_depend>
+  <exec_depend>cob_navigation_global</exec_depend>
+  <exec_depend>cob_default_env_config</exec_depend>
+  <exec_depend>cob_default_robot_config</exec_depend>
+  <exec_depend>std_msgs</exec_depend>
+  <exec_depend>roscpp</exec_depend>
+
+
+</package>
